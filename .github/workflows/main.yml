@@ -1,17 +1,16 @@
 name: Tested Comment Checker for Merged PRs
 description: Finds comments with "TESTED" in merged PRs.
 
-on: push
-
-runs-on: ubuntu-latest
-
-permissions:
-  issues: read
-  pull-requests: read
+on: pull_request: types: [closed]
 
 jobs:
   check_merged_pr_comments:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Corrected indentation
+
+    permissions:
+      issues: read
+      pull-requests: read
+
     steps:
       - uses: actions/checkout@v3
 
