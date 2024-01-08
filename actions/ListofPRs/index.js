@@ -1,7 +1,7 @@
 const { github, context } = require('@actions/github');
 
 try {
-  const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
+  const octokit = github.getOctokit(process.env.TOKEN_KEY);
 
   // Get a list of all pull requests
   const allPullRequests = await octokit.pulls.list({
