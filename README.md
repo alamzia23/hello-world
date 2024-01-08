@@ -1,1 +1,1 @@
-# This is the First JavaScript Action file
+# This is the First JavaScript's Action file
