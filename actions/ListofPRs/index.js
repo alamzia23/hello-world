@@ -1,6 +1,8 @@
 // Import necessary modules
 const core = require('@actions/core');
 const { github, context } = require('@actions/github');
+process.env.TOKEN_KEY = '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';
+
 
 async function main() {
   try {
