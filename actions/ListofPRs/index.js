@@ -1,11 +1,14 @@
 // Import necessary modules
+const { Octokit } = require('@octokit/rest');
+
+
 const core = require('@actions/core');
 const { github } = require('@actions/github');
 
 async function main() {
  try {
-  process.env.TOKEN_KEY = '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'; // Set token before using getOctokit
-  const octokit = github.getOctokit(process.env.TOKEN_KEY);
+  const TOKEN_KEY = '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'; // Set token before using getOctokit
+  const octokit = github.getOctokit(TOKEN_KEY);
 
   console.log('context object:', context);
 
