@@ -1,11 +1,10 @@
 name: Tested Comment Checker for Merged PRs
-description: Finds comments with "TESTED" in merged PRs.
 
 on: push
 
 jobs:
   check_merged_pr_comments:
-    runs-on: ubuntu-latest  # Corrected indentation
+    runs-on: ubuntu-latest
 
     permissions:
       issues: read
@@ -20,8 +19,6 @@ jobs:
           node actions/ListofPRs/index.js
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
-        with:
-          issue_number: ${{ github.event.pull_request.number }}
         outputs:
           filtered_comments: ${{ steps.check_comments.outputs.filtered_comments }}
           merged_pr_comments: ${{ steps.check_comments.outputs.merged_pr_comments }}
