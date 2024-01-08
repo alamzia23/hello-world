@@ -1,30 +1,10 @@
-name: Tested Comment Checker for Merged PRs
-description: Finds comments with "TESTED" in merged PRs.
-
-runs-on: ubuntu-latest
-
-permissions:
-  issues: read
-  pull-requests: read
-
-jobs:
-  check_merged_pr_comments:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Check for tested comments in merged PRs
-        id: check_comments
-        uses: ./actions/ListofPRs/action.yml
-        
-        outputs:
-          filtered_comments: ${{ steps.check_comments.outputs.filtered_comments }}
-          merged_pr_comments: ${{ steps.check_comments.outputs.merged_pr_comments }}
-      - name: Process filtered comments (optional)
-        if: steps.check_comments.outputs.filtered_comments
-        run: |
-          echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR:"
-          for comment in ${{ steps.check_comments.outputs.filtered_comments }}; do
-            echo "  - ${comment.body}"
-          done
-          
-
+name: 'Tested Comment Checker'
+description: 'Filters comments for "TESTED" in merged PRs and outputs filtered and PR-specific comments'
+runs:
+  using: 'node16'
+  main: 'index.js'
+outputs:
+  filtered_comments:
+    description: 'Filtered comments containing "TESTED" and associated with merged PRs'
+  merged_pr_comments:
+    description: 'Comments specifically from the merged PRs containing "TESTED"'
