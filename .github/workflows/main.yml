@@ -16,7 +16,7 @@ jobs:
       - name: Check for tested comments in merged PRs
         id: check_comments
         run: |
-          node hello-world/actions/ListofPRs/index.js
+          node index.js
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
