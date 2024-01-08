@@ -19,12 +19,9 @@ jobs:
           node actions/ListofPRs/index.js
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
-        outputs:
-          filtered_comments: ${{ steps.check_comments.outputs.filtered_comments }}
-          merged_pr_comments: ${{ steps.check_comments.outputs.merged_pr_comments }}
 
       - name: Process filtered comments
-        if: ${{ steps.check_comments.outputs.filtered_comments }}
+        if: steps.check_comments.outputs.filtered_comments
         run: |
           echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR:"
           for comment in ${{ steps.check_comments.outputs.filtered_comments }}; do
