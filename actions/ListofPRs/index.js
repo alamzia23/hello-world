@@ -1,11 +1,10 @@
 // Import necessary modules
 const core = require('@actions/core');
-const { github, context } = require('@actions/github');
-process.env.TOKEN_KEY = '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';
-
+const { github } = require('@actions/github'); // Correct import syntax
 
 async function main() {
   try {
+    process.env.TOKEN_KEY = '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'; // Set token before using getOctokit
     const octokit = github.getOctokit(process.env.TOKEN_KEY);
 
     // Get a list of all closed pull requests
