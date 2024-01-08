@@ -1,7 +1,7 @@
 name: Tested Comment Checker for Merged PRs
 description: Finds comments with "TESTED" in merged PRs.
 
-on: pull_request:closed
+on: pull_request: types: [closed]
 
 runs-on: ubuntu-latest
 
