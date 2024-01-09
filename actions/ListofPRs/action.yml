@@ -1,0 +1,10 @@
+name: 'Tested Comment Checker'
+description: 'Filters comments for "TESTED" in merged PRs and outputs filtered and PR-specific comments'
+runs:
+  using: 'node18'
+  main: 'index.mjs'
+outputs:
+  filtered_comments:
+    description: 'Filtered comments containing "TESTED" and associated with merged PRs'
+  merged_pr_comments:
+    description: 'Comments specifically from the merged PRs containing "TESTED"'
