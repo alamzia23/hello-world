@@ -12,7 +12,7 @@ async function main() {
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      state: 'closed',
+      state: 'all', // Fetch both open and closed PRs
     });
 
     for (const pr of allPullRequests.data) {
