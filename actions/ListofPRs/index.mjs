@@ -26,11 +26,13 @@ async function main() {
           issue_number: pr.number,
         });
 
-        // Print all comments
+        // Filter and print only comments with "TESTED" body
         for (const comment of allCommentsForPR.data) {
-          console.log(`Comment ${comment.id}:`);
-          console.log(comment.body);
-          console.log('--------------------');
+          if (comment.body.trim() === 'TESTED') {
+            console.log(`Comment ${comment.id}:`);
+            console.log(comment.body);
+            console.log('--------------------');
+          }
         }
       } catch (error) {
         console.error('Error processing pull request:', error.message);
