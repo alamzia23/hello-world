@@ -7,7 +7,7 @@ const context = actions.context;
 async function main() {
   try {
     const TOKEN_KEY = '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';
-    const octokit = new Octokit({ auth: TOKEN_KEY });
+    const octokit = new Octokit({ TOKEN_KEY });
 
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
