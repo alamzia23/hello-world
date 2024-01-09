@@ -12,9 +12,13 @@ async function main() {
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      console.log(`Processing PR #${pr.number}`);//this is the current edit for accessing the list of the pr
       state: 'closed',
     });
+
+    // Print the PR numbers here, after the data is retrieved
+    for (const pr of allPullRequests.data) {
+      console.log(`Processing PR #${pr.number}`);
+    }
 
     const filteredComments = [];
     const mergedPrComments = [];
