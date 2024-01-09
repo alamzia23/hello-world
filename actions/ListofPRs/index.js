@@ -1,4 +1,5 @@
-const { Octokit } = require('@octokit/rest');
+import { Octokit } from '@octokit/rest';
+
 const core = require('@actions/core');
 const { github } = require('@actions/github');
 
