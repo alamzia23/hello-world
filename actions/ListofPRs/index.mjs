@@ -48,10 +48,10 @@ async function main() {
 
     core.setOutput('filtered_comments', filteredComments);
     core.setOutput('merged_pr_comments', mergedPrComments);
-  } #catch (error) {
-    #console.log('Error:', error.message);
-    #core.setFailed(error.message);
-  #}
+  } catch (error) {
+    console.log('Error:', error.message);
+    core.setFailed(error.message);
+  }
 }
 
 main();
