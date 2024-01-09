@@ -7,16 +7,19 @@ import pkg from '@actions/github';
 async function main() {
   try {
     const TOKEN_KEY = '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';
-    const octokit = new Octokit(TOKEN_KEY); // Use the imported Octokit class
+    const octokit = new Octokit(TOKEN_KEY);
 
-    const allFilteredComments = [];
-    const allMergedPrComments = [];
+    // **Replace this section with your specific actions:**
 
+    // Example: Fetching closed pull requests and filtering comments
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
       repo: context.repo.repo,
       state: 'closed',
     });
+
+    const filteredComments = [];
+    const mergedPrComments = [];
 
     for (const pr of allPullRequests.data) {
       const issueComments = await octokit.issues.listComments({
@@ -25,28 +28,30 @@ async function main() {
         issue_number: pr.number,
       });
 
-      const filteredComments = issueComments.data.filter((comment) => {
-        return comment.body.toUpperCase().includes('TESTED');
-      });
+      const commentsWithTested = issueComments.data.filter(
+        (comment) => comment.body.toUpperCase().includes('TESTED')
+      );
 
-      const mergedPrComments = await Promise.all(
-        filteredComments.map(async (comment) => {
-          const prReviewComment = await octokit.pulls.getReviewComment({
+      const prReviewComments = await Promise.all(
+        commentsWithTested.map(async (comment) => {
+          return await octokit.pulls.getReviewComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: pr.number,
             comment_id: comment.id,
           });
-          return prReviewComment.data;
         })
       );
 
-      allFilteredComments.push(...filteredComments);
-      allMergedPrComments.push(...mergedPrComments);
+      filteredComments.push(...commentsWithTested);
+      mergedPrComments.push(...prReviewComments.map((comment) => comment.data));
     }
 
-    core.setOutput('filtered_comments', allFilteredComments);
-    core.setOutput('merged_pr_comments', allMergedPrComments);
+    core.setOutput('filtered_comments', filteredComments);
+    core.setOutput('merged_pr_comments', mergedPrComments);
+
+    // **End of example actions**
+
   } catch (error) {
     console.log('Error:', error.message);
     core.setFailed(error.message);
