@@ -1,4 +1,4 @@
-import Octokit from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
 import core from '@actions/core';
 
 // Import the entire module and access 'github' property later:
