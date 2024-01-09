@@ -12,6 +12,7 @@ async function main() {
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
       repo: context.repo.repo,
+      console.log(`Processing PR #${pr.number}`);//this is the current edit for accessing the list of the pr
       state: 'closed',
     });
 
