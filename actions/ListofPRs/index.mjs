@@ -1,14 +1,13 @@
-import { Octokit } from '@octokit/rest';
-
+import Octokit from '@octokit/rest';
 import core from '@actions/core';
 
-import { github } from '@actions/github';
-
+// Import the entire module and access 'github' property later:
+import pkg from '@actions/github';
 
 async function main() {
   try {
     const TOKEN_KEY = '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';
-    const octokit = github.getOctokit(TOKEN_KEY);
+    const octokit = new Octokit(TOKEN_KEY); // Use the imported Octokit class
 
     const allFilteredComments = [];
     const allMergedPrComments = [];
