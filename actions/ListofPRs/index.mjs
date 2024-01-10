@@ -17,16 +17,15 @@ async function main() {
 
     for (const pr of allPullRequests.data) {
       try {
-        console.log(`Processing PR #${pr.number}`);
+        const exactPRNumber = pr.node_id.split('/').pop();
+        console.log(`Processing PR ${exactPRNumber}`);
 
-        // Fetch all comments for this PR
         const allCommentsForPR = await octokit.issues.listComments({
           owner: context.repo.owner,
           repo: context.repo.repo,
           issue_number: pr.number,
         });
 
-        // Filter and print only comments with "TESTED" body
         for (const comment of allCommentsForPR.data) {
           if (comment.body.trim() === 'TESTED') {
             console.log(`Comment ${comment.id}:`);
