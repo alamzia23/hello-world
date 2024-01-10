@@ -14,20 +14,24 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18  # Your preferred Node.js version
-      - run: npm install @actions/core @octokit/rest  # Install both dependencies
+          node-version: 18
+      - run: npm install @actions/core @octokit/rest
+
+      - name: Get PR number
+        id: get_pr_number
+        run: echo "PR_NUMBER=${GITHUB_REF#refs/pull/}" >> $GITHUB_ENV
 
       - name: Check for tested comments in merged PRs
         id: check_comments
         run: |
-          node ./actions/ListofPRs/index.mjs
+          node ./actions/ListofPRs/index.mjs ${{ env.PR_NUMBER }}
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
       - name: Process filtered comments
         if: steps.check_comments.outputs.filtered_comments
         run: |
-          echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR:"
+          echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR #${{ env.PR_NUMBER }}"
           for comment in ${{ steps.check_comments.outputs.filtered_comments }}; do
             echo "- ${comment.body}"
           done
