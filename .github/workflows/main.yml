@@ -1,6 +1,7 @@
 name: Tested Comment Checker for Merged PRs
 
 on:
+  push:
   workflow_call:
 
 jobs:
