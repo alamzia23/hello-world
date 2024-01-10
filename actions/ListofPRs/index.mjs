@@ -34,6 +34,14 @@ async function main() {
 
         // Print the "TESTED" comments only if a "TESTED" comment exists
         if (hasTestedComment) {
+          const pullRequest = await octokit.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: pr.number,
+          });
+
+          console.log(`SHA: ${pullRequest.data.head.sha}`);
+
           for (const comment of allCommentsForPR.data) {
             if (comment.body.trim() === 'TESTED') {
               console.log(`Comment ${comment.id}:`);
