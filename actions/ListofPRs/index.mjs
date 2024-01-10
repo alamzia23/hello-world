@@ -12,26 +12,34 @@ async function main() {
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      state: 'closed', // Fetch only closed PRs
+      state: 'closed',
     });
 
     for (const pr of allPullRequests.data) {
       try {
-        console.log(`Processing PR #${pr.number}`);
-
-        // Fetch all comments for this PR
         const allCommentsForPR = await octokit.issues.listComments({
           owner: context.repo.owner,
           repo: context.repo.repo,
           issue_number: pr.number,
         });
 
-        // Filter and print only comments with "TESTED" body
+        let hasTestedComment = false;
         for (const comment of allCommentsForPR.data) {
           if (comment.body.trim() === 'TESTED') {
-            console.log(`Comment ${comment.id}:`);
-            console.log(comment.body);
-            console.log('--------------------');
+            console.log(`PR Number: ${pr.number}`);
+            hasTestedComment = true;
+            break; // Exit the comment loop since a "TESTED" comment is found
+          }
+        }
+
+        // Print the "TESTED" comments only if a "TESTED" comment exists
+        if (hasTestedComment) {
+          for (const comment of allCommentsForPR.data) {
+            if (comment.body.trim() === 'TESTED') {
+              console.log(`Comment ${comment.id}:`);
+              console.log(comment.body);
+              console.log('--------------------');
+            }
           }
         }
       } catch (error) {
