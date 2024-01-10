@@ -9,16 +9,20 @@ async function main() {
     const TOKEN_KEY = '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';
     const octokit = new Octokit({ TOKEN_KEY });
 
+    const prNumber = process.argv[2];
+    console.log(`Processing PR number: ${prNumber}`);
+
+    const filteredPRNumbers = [];
+
     const allPullRequests = await octokit.pulls.list({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      state: 'closed', // Fetch only closed PRs
+      state: 'closed',
     });
 
     for (const pr of allPullRequests.data) {
       try {
         const exactPRNumber = pr.node_id.split('/').pop();
-        console.log(`Processing PR ${exactPRNumber}`);
 
         const allCommentsForPR = await octokit.issues.listComments({
           owner: context.repo.owner,
@@ -28,15 +32,16 @@ async function main() {
 
         for (const comment of allCommentsForPR.data) {
           if (comment.body.trim() === 'TESTED') {
-            console.log(`Comment ${comment.id}:`);
-            console.log(comment.body);
-            console.log('--------------------');
+            filteredPRNumbers.push(pr.number);
+            break; // Move to the next PR once a "TESTED" comment is found
           }
         }
       } catch (error) {
         console.error('Error processing pull request:', error.message);
       }
     }
+
+    core.setOutput('filtered_pr_numbers', filteredPRNumbers);
   } catch (error) {
     console.error('Error:', error.message);
     core.setFailed(error.message);
