@@ -26,7 +26,7 @@ async function main() {
         let hasTestedComment = false;
         for (const comment of allCommentsForPR.data) {
           if (comment.body.trim() === 'TESTED') {
-            console.log(`PR Number: ${pr.number}`);
+           // console.log(`PR Number: ${pr.number}`);
             hasTestedComment = true;
             break; // Exit the comment loop since a "TESTED" comment is found
           }
