@@ -8,9 +8,9 @@ jobs:
   check_merged_pr_comments:
     runs-on: ubuntu-latest
 
-    permissions:
-      issues: read
-      pull-requests: read
+    #permissions:
+     # issues: read
+     # pull-requests: read
 
     steps:
       - uses: actions/checkout@v3
