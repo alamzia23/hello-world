@@ -22,7 +22,7 @@ jobs:
       - name: Check for tested comments in merged PRs
         id: check_comments
         run: |
-          node ./actions/ListofPRs/index.mjs
+          node alamzia23/hello-world/actions/ListofPRs/index.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
