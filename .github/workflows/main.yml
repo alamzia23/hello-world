@@ -26,7 +26,7 @@ jobs:
         id: check_comments
         run: |
           pwd
-          node ./actions/ListofPRs/index.mjs
+          node ./actions/ListofPRs/action.yml
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
