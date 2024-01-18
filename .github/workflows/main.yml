@@ -35,9 +35,9 @@ jobs:
        
         with:
           script: | 
-            import { Octokit } from '@octokit/rest';
-            import * as core from '@actions/core';
-            import * as actions from '@actions/github';
+            const { Octokit } = require('@octokit/rest');
+            const core = require('@actions/core');
+            const actions = require('@actions/github') ;
 
             const context = actions.context;
   
