@@ -31,7 +31,7 @@ jobs:
         #   pwd
         #   # node ${GITHUB_WORKSPACE}/actions/ListofPRs/index.mjs
         #   npm run run-workflow
-      - run: |
+        run: |
           import { Octokit } from '@octokit/rest';
           import * as core from '@actions/core';
           import * as actions from '@actions/github';
