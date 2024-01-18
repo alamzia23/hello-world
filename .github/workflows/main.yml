@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-     
-        node-version: 18  # Your preferred Node.js version
+      # node-version: 18  # Your preferred Node.js version
+
       # - run: |
       #     pwd
       #     cd ${GITHUB_WORKSPACE}/actions/ListofPRs
@@ -34,10 +34,9 @@ jobs:
         uses: actions/github-script@v6
        
         with:
-          script: |
-        # run: |
-              import { Octokit } from '@octokit/rest';
-             import * as core from '@actions/core';
+          script: | 
+            import { Octokit } from '@octokit/rest';
+            import * as core from '@actions/core';
             import * as actions from '@actions/github';
 
             const context = actions.context;
