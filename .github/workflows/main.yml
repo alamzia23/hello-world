@@ -19,14 +19,14 @@ jobs:
           node-version: 18  # Your preferred Node.js version
       - run: |
           pwd
-          cd ./actions/ListofPRs
+          cd ${GITHUB_WORKSPACE}/actions/ListofPRs
           npm install @actions/core @octokit/rest  # Install both dependencies
 
       - name: Check for tested comments in merged PRs
         id: check_comments
         run: |
           pwd
-          node ./actions/ListofPRs/index.mjs
+          node ${GITHUB_WORKSPACE}/actions/ListofPRs/index.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
