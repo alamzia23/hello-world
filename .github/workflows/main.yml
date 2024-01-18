@@ -107,4 +107,4 @@ jobs:
       #     echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR:"
       #     for comment in ${{ steps.check_comments.outputs.filtered_comments }}; do
       #       echo "- ${comment.body}"
-      #  done
+      
