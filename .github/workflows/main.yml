@@ -39,7 +39,7 @@ jobs:
             const actioncore = require('@actions/core');
             const actions = require('@actions/github') ;
 
-            const context = actions.context;
+            const actioncontext = actions.context;
   
             async function main() {
             try {
@@ -47,16 +47,16 @@ jobs:
                  const octokit = new Octokit({ TOKEN_KEY });
   
                  const allPullRequests = await octokit.pulls.list({
-                       owner: context.repo.owner,
-                         repo: context.repo.repo,
+                       owner: actioncontext.repo.owner,
+                         repo: actioncontext.repo.repo,
                             state: 'closed',
                                                    });
   
                           for (const pr of allPullRequests.data) {
                                             try {
                                    const allCommentsForPR = await octokit.issues.listComments({
-                                       owner: context.repo.owner,
-                                        repo: context.repo.repo,
+                                       owner: actioncontext.repo.owner,
+                                        repo: actioncontext.repo.repo,
                                         issue_number: pr.number,
                                                                    });
   
@@ -72,8 +72,8 @@ jobs:
                                       // Print the "TESTED" comments only if a "TESTED" comment exists
                                        if (hasTestedComment) {
                                  const pullRequest = await octokit.pulls.get({
-                                        owner: context.repo.owner,
-                                       repo: context.repo.repo,
+                                        owner: actioncontext.repo.owner,
+                                       repo: actioncontext.repo.repo,
                                        pull_number: pr.number,
                                                                });
   
@@ -107,4 +107,5 @@ jobs:
       #     echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR:"
       #     for comment in ${{ steps.check_comments.outputs.filtered_comments }}; do
       #       echo "- ${comment.body}"
+      #done
       
