@@ -17,12 +17,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18  # Your preferred Node.js version
-      - run: npm install @actions/core @octokit/rest  # Install both dependencies
+      - run: |
+          pwd
+          cd ./actions/ListofPRs
+          npm install @actions/core @octokit/rest  # Install both dependencies
 
       - name: Check for tested comments in merged PRs
         id: check_comments
         run: |
-          node ./actions/ListofPRs/index.mjs
+          pwd
+          node index.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
