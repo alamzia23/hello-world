@@ -21,8 +21,8 @@ jobs:
       #     pwd
       #     cd ${GITHUB_WORKSPACE}/actions/ListofPRs
       #     npm install @actions/core @octokit/rest  # Install both dependencies
-      - run: |
-         npm install @octokit/rest @actions/core @actions/github
+      # - run: |
+      #    npm install @octokit/rest @actions/core @actions/github
             
 
       - name: Check for tested comments in merged PRs
@@ -35,69 +35,48 @@ jobs:
        
         with:
           script: | 
-            const { Octokit } = require('@octokit/rest');
-            const actioncore = require('@actions/core');
-            const actions = require('@actions/github') ;
+            const allPullRequests = await github.rest.pulls.list({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'closed',
+             });
 
-            const actioncontext = actions.context;
-  
-            async function main() {
-            try {
-              const TOKEN_KEY = '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';
-                 const octokit = new Octokit({ TOKEN_KEY });
-  
-                 const allPullRequests = await octokit.pulls.list({
-                       owner: actioncontext.repo.owner,
-                         repo: actioncontext.repo.repo,
-                            state: 'closed',
-                                                   });
-  
-                          for (const pr of allPullRequests.data) {
-                                            try {
-                                   const allCommentsForPR = await octokit.issues.listComments({
-                                       owner: actioncontext.repo.owner,
-                                        repo: actioncontext.repo.repo,
-                                        issue_number: pr.number,
-                                                                   });
-  
-                                       let hasTestedComment = false;
-                                      for (const comment of allCommentsForPR.data) {
-                                    if (comment.body.trim() === 'TESTED') {
-                                /*console.log(`PR Number: ${pr.number}`);*/
-                                   hasTestedComment = true;
-                              break; // Exit the comment loop since a "TESTED" comment is found
-                                            }
-                                           }
-  
-                                      // Print the "TESTED" comments only if a "TESTED" comment exists
-                                       if (hasTestedComment) {
-                                 const pullRequest = await octokit.pulls.get({
-                                        owner: actioncontext.repo.owner,
-                                       repo: actioncontext.repo.repo,
-                                       pull_number: pr.number,
-                                                               });
-  
-                                 console.log(`SHA: ${pullRequest.data.head.sha}`);
-  
-                                     for (const comment of allCommentsForPR.data) {
-                               if (comment.body.trim() === 'TESTED') {
-                               console.log(`Comment ${comment.id}:`);
-                                    console.log(comment.body);
-                                       console.log('--------------------');
-                                                        }
-                                                           }
-                                                               }
-                                                   } catch (error) {
-                                       console.error('Error processing pull request:', error.message);
-                                                              }
-                                                          }
-                                                        } catch (error) {
-                                              console.error('Error:', error.message);
-                                            actioncore.setFailed(error.message);
-                                                                }
-                                                                 }
-  
-                                                        main();
+            for (const pr of allPullRequests.data) {
+            const allCommentsForPR = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+             });
+
+            let hasTestedComment = false;
+            for (const comment of allCommentsForPR.data) {
+              if (comment.body.trim() === 'TESTED') {
+                /*console.log(`PR Number: ${pr.number}`);*/
+                hasTestedComment = true;
+                break; // Exit the comment loop since a "TESTED" comment is found
+              }
+            }
+
+            // Print the "TESTED" comments only if a "TESTED" comment exists
+            if (hasTestedComment) {
+              const pullRequest = await github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+              });
+
+              console.log(`SHA: ${pullRequest.data.head.sha}`);
+
+              for (const comment of allCommentsForPR.data) {
+                if (comment.body.trim() === 'TESTED') {
+                  console.log(`Comment ${comment.id}:`);
+                  console.log(comment.body);
+                  console.log('--------------------');
+                }
+              }
+            }
+            }
+
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
 
@@ -107,5 +86,5 @@ jobs:
       #     echo "Found ${{ steps.check_comments.outputs.filtered_comments.length }} comments containing 'TESTED' in merged PR:"
       #     for comment in ${{ steps.check_comments.outputs.filtered_comments }}; do
       #       echo "- ${comment.body}"
-      #done
+      #donee
       
