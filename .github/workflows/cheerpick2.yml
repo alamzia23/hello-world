@@ -27,16 +27,16 @@ jobs:
       - name: Access all the 
         run: git fetch --all
 
-      - name: Create INT branch if needed
+      - name: Create int branch if needed
         run: |
-          git branch -f INT ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
-          git checkout INT
+          git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
+          git checkout int
 
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
 
-      - name: Push INT branch
-        run: git push origin INT
+      - name: Push int branch
+        run: git push origin int
 
       - name: Create pull request
-        run: gh pr create --base main --head INT --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
+        run: gh pr create --base main --head int --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
