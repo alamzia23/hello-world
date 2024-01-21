@@ -37,5 +37,5 @@ jobs:
             gh pr create --base int --head cherry-pick-$PR_SHA --title "Cherry-pick of commit $PR_SHA"
           done
 
-      - name: Cleanup branches (optional)
-        run: git branch -D cherry-pick-*
+      # - name: Cleanup branches (optional)
+      #   run: git branch -D cherry-pick-*
