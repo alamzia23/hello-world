@@ -21,6 +21,10 @@ jobs:
 
       - name: Create and switch to int... branch
         run: git checkout -b int
+        
+      - name: Fetch all remote branches
+        run: git fetch --all
+
 
       - name: Cherry-pick PR changes
         run: |
