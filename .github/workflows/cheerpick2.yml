@@ -1,0 +1,41 @@
+name: Cherry-Pick and Create PRs
+
+on:
+  workflow_dispatch:
+    inputs:
+      PR_SHAs:
+        description: Comma-separated list of PR SHAs to cherry-pick
+        required: true
+      BASE_BRANCH:
+        description: Base branch to create PRs against
+        required: true
+        default: main
+
+jobs:
+  cherry-pick-and-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch remote branches
+        run: git fetch --all
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "alamziya.fzd@gmail.com"
+          git config --global user.name "alamzia23"
+
+      - name: Process PR SHAs
+        run: |
+          for PR_SHA in ${INPUT_PR_SHAs//,/ }
+          do
+            git checkout -b cherry-pick-$PR_SHA
+            git cherry-pick $PR_SHA
+            git push origin cherry-pick-$PR_SHA
+            gh pr create --base int --head cherry-pick-$PR_SHA --title "Cherry-pick of commit $PR_SHA"
+          done
+
+      - name: Cleanup branches (optional)
+        run: git branch -D cherry-pick-*
