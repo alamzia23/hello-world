@@ -1,14 +1,14 @@
-name: Cherry-Pick and Create PRs
+name: Cherry-Pick and Create PR
 
 on:
   workflow_dispatch:
     inputs:
-      PR_SHAs:
-        description: Comma-separated list of PR SHAs to cherry-pick
+      PR_SHA:
+        description: SHA of the commit to cherry-pick
         required: true
       BASE_BRANCH:
-        description: Base branch to create PRs against
-        required: true
+        description: Base branch to create PR against (optional, defaults to main)
+        required: false
         default: main
 
 jobs:
@@ -19,23 +19,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Fetch remote branches
-        run: git fetch --all
-
       - name: Set up Git
         run: |
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
 
-      - name: Process PR SHAs
+      - name: Create INT branch if needed
         run: |
-          for PR_SHA in ${INPUT_PR_SHAs//,/ }
-          do
-            git checkout -b cherry-pick-$PR_SHA
-            git cherry-pick $PR_SHA
-            git push origin cherry-pick-$PR_SHA
-            gh pr create --base int --head cherry-pick-$PR_SHA --title "Cherry-pick of commit $PR_SHA"
-          done
+          git branch -f INT ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
+          git checkout INT
 
-      # - name: Cleanup branches (optional)
-      #   run: git branch -D cherry-pick-*
+      - name: Cherry-pick commit
+        run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
+
+      - name: Push INT branch
+        run: git push origin INT
+
+      - name: Create pull request
+        run: gh pr create --base main --head INT --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
