@@ -19,7 +19,7 @@ jobs:
 
       - name: Create and switch to int... branch
         run: |
-          git checkout -b int...
+          git checkout -b int
 
       - name: Cherry-pick PR changes
         run: |
