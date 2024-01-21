@@ -24,7 +24,7 @@ jobs:
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
 
-      - name: Access all the 
+      - name: Access all the repos
         run: git fetch --all
 
       - name: Create int branch if needed
