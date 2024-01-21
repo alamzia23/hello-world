@@ -1,0 +1,32 @@
+name: Cherry-Pick PR to INT...
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cherry-pick:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.email "alamziya.fzd@gmail.com"
+          git config --global user.name "alamzia23"
+
+      - name: Create and switch to INT... branch
+        run: |
+          git checkout -b INT...
+
+      - name: Cherry-pick PR changes
+        run: |
+          PR_SHA="4f7c232df371d65ee7fdb03f1ab485ccf4ee086a"  # Replace with your PR commit SHA
+          git cherry-pick $PR_SHA
+          # Handle conflicts if any
+
+      - name: Push changes to INT... branch
+        run: git push origin INT...
