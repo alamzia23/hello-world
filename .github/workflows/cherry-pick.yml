@@ -1,10 +1,9 @@
 name: Cherry-Pick PR to INT...
 
-on:
-  push:
-    branches:
-      - main
+on: 
+  workflow_dispatch:
 
+  
 jobs:
   cherry-pick:
     runs-on: ubuntu-latest
