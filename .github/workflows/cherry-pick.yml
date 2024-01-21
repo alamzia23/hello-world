@@ -1,4 +1,4 @@
-name: Cherry-Pick PR to INT...
+name: Cherry-Pick PR to int...
 
 on: 
   workflow_dispatch:
@@ -17,9 +17,9 @@ jobs:
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
 
-      - name: Create and switch to INT... branch
+      - name: Create and switch to int... branch
         run: |
-          git checkout -b INT...
+          git checkout -b int...
 
       - name: Cherry-pick PR changes
         run: |
@@ -27,5 +27,5 @@ jobs:
           git cherry-pick $PR_SHA
           # Handle conflicts if any
 
-      - name: Push changes to INT... branch
-        run: git push origin INT...
+      - name: Push changes to int... branch
+        run: git push origin int...
