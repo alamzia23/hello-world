@@ -13,7 +13,7 @@ jobs:
   cherry-pick-and-pr:
     runs-on: ubuntu-latest
 
-    env:  # Added the GH_TOKEN environment variable here
+    env:
       GH_TOKEN: ${{ github.token }}
 
     steps:
@@ -36,8 +36,22 @@ jobs:
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
 
+      - name: Fetch remote changes
+        run: git fetch origin
+
+      # Choose either merge or rebase:
+
+      # Option 1: Merge
+      - name: Merge remote changes
+        run: git merge origin/int
+
+      # Option 2: Rebase (comment out the merge step above if using rebase)
+      # - name: Rebase onto remote branch
+      #   run: git rebase origin/int
+
       - name: Push int branch
         run: git push origin int
 
       - name: Create pull request
         run: gh pr create --base main --head int --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
+
