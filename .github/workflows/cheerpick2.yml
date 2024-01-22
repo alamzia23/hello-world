@@ -36,10 +36,6 @@ jobs:
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
 
-      - name: Fetch remote changes
-        run: git fetch origin
-
-      
       - name: Push int branch
         run: git push origin int
 
