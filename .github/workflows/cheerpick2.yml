@@ -39,6 +39,6 @@ jobs:
       - name: Push int branch
         run: git push origin int
 
-      - name: Create pull request
-        run: gh pr create --base main --head int --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
+      # - name: Create pull request
+      #   run: gh pr create --base main --head int --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
 
