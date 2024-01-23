@@ -24,7 +24,7 @@ jobs:
         run: |
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
-          git config --global merge.tool vimdiff  # Added line for merge tool configuration
+          git config --global merge.tool vimdiff
 
       - name: Access all the repos
         run: git fetch --all
@@ -36,7 +36,7 @@ jobs:
 
       - name: Cherry-pick commit with conflict resolution
         run: |
-          git cherry-pick ${{ github.event.inputs.PR_SHA }} || (git mergetool -y && git cherry-pick --continue)
+          git cherry-pick ${{ github.event.inputs.PR_SHA }}
 
       - name: Push int branch
         run: git push origin int
