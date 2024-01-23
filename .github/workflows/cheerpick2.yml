@@ -1,8 +1,8 @@
 on:
   workflow_dispatch:
     inputs:
-      PR_NUMBERS:
-        description: Comma-separated list of PR numbers to cherry-pick
+      PR_SHA:
+        description: SHA of the commit to cherry-pick
         required: true
       BASE_BRANCH:
         description: Base branch to create PR against (optional, defaults to main)
@@ -24,20 +24,17 @@ jobs:
         run: |
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
-          git fetch --all
+
+      - name: Access all the repos
+        run: git fetch --all
 
       - name: Create int branch if needed
         run: |
           git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'dev' }} || true
           git checkout int
 
-      - name: Process PR numbers
-        run: |
-          pr_numbers=(${{ github.event.inputs.PR_NUMBERS }})
-          for pr_number in "${pr_numbers[@]}"; do
-            sha=$(git ls-remote origin pull/$pr_number/head | cut -f1)
-            echo "Fetched SHA for PR $pr_number: $sha"  # Print the fetched SHA
-            git cherry-pick -X theirs $sha
-            git push origin int  # Push after each cherry-pick to avoid conflicts
-            gh pr create --base ${{ github.event.inputs.BASE_BRANCH }} --title "Cherry-pick of PR $pr_number" --body "Cherry-picked from PR $pr_number"
-          done
+      - name: Cherry-pick commit
+        run: git cherry-pick -X theirs ${{ github.event.inputs.PR_SHA }}
+
+      - name: Push int branch
+        run: git push origin int
