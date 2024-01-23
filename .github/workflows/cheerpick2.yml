@@ -1,4 +1,4 @@
-on:
+ on:
   workflow_dispatch:
     inputs:
       PR_SHA:
@@ -9,7 +9,7 @@ on:
         required: false
         default: main
 
-jobs:
+ jobs:
   cherry-pick-and-pr:
     runs-on: ubuntu-latest
 
@@ -33,12 +33,14 @@ jobs:
           git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
           git checkout int
 
-      - name: Cherry-pick commit
-        run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
+      - name: Cherry-pick commit with conflict resolution
+        run: |
+          git cherry-pick ${{ github.event.inputs.PR_SHA }} || (git mergetool -y && git cherry-pick --continue)
 
       - name: Push int branch
         run: git push origin int
 
+
+
       # - name: Create pull request
       #   run: gh pr create --base main --head int --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
-
