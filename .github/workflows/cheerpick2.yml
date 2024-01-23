@@ -30,7 +30,7 @@ jobs:
 
       - name: Create int branch if needed
         run: |
-          git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'dev' }} || true
+          # git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'dev' }} || true
           git checkout int
 
       - name: Cherry-pick commit
