@@ -36,6 +36,7 @@ jobs:
           pr_numbers=(${{ github.event.inputs.PR_NUMBERS }})
           for pr_number in "${pr_numbers[@]}"; do
             sha=$(git ls-remote origin pull/$pr_number/head | cut -f1)
+            echo "Fetched SHA for PR $pr_number: $sha"  # Print the fetched SHA
             git cherry-pick -X theirs $sha
             git push origin int  # Push after each cherry-pick to avoid conflicts
             gh pr create --base ${{ github.event.inputs.BASE_BRANCH }} --title "Cherry-pick of PR $pr_number" --body "Cherry-picked from PR $pr_number"
