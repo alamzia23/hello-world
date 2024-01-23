@@ -28,13 +28,32 @@ jobs:
       - name: Access all the repos
         run: git fetch --all
 
+      - name: Update current branch with remote changes
+        run: git pull origin int
+
       - name: Create int branch if needed
         run: |
           git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
           git checkout int
 
       - name: Cherry-pick commit with ours strategy
-        run: git cherry-pick -X ours ${{ github.event.inputs.PR_SHA }}
+        run: git cherry-pick -X ours ${{ github.event.inputs.PR_SHA }} || true
 
-      - name: Push int branch
-        run: git push origin int
+      - name: Handle cherry-pick success
+        if: success()
+        run: |
+          echo "Cherry-pick successful. Pushing changes to remote..."
+          git push origin int
+
+      - name: Handle cherry-pick conflict
+        if: failure()
+        run: |
+          echo "Cherry-pick conflict detected. Please resolve conflicts manually and try again."
+          git status
+
+      - name: Handle empty commit (optional)
+        if: failure()
+        run: |
+          git log int --oneline --decorate --no-merges
+          echo "If the empty commit is acceptable, run: git commit --allow-empty"
+
