@@ -8,77 +8,38 @@ jobs:
   check_merged_pr_comments:
     runs-on: ubuntu-latest
 
-    #permissions:
-     # issues: read
-     # pull-requests: read
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-     
-
-      # - run: |
-      #     pwd
-      #     cd ${GITHUB_WORKSPACE}/actions/ListofPRs
-      #     npm install @actions/core @octokit/rest  # Install both dependencies
-      # - run: |
-      #    npm install @octokit/rest @actions/core @actions/github
-            
 
       - name: Check for tested comments in merged PRs
         id: check_comments
-        # run: |
-        #   pwd
-        #   # node ${GITHUB_WORKSPACE}/actions/ListofPRs/index.mjs
-        #   npm run run-workflow
         uses: actions/github-script@v6
-       
-        with:
-          script: | 
-            const allPullRequests = await github.rest.pulls.list({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            state: 'closed',
-             });
 
-            for (const pr of allPullRequests.data) {
-            const allCommentsForPR = await github.rest.issues.listComments({
+        with:
+          script: |
+            const allPullRequests = await github.rest.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: pr.number,
-             });
+              state: 'closed',
+            });
 
-            let hasTestedComment = false;
-            for (const comment of allCommentsForPR.data) {
-              if (comment.body.trim() === 'TESTED') {
-                /*console.log(`PR Number: ${pr.number}`);*/
-                hasTestedComment = true;
-                break; // Exit the comment loop since a "TESTED" comment is found
-              }
-            }
-
-            // Print the "TESTED" comments only if a "TESTED" comment exists
-            if (hasTestedComment) {
-              const pullRequest = await github.rest.pulls.get({
+            for (const pr of allPullRequests.data) {
+              const allCommentsForPR = await github.rest.issues.listComments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                pull_number: pr.number,
+                issue_number: pr.number,
               });
-
-              console.log(`SHA: ${pullRequest.data.head.sha}`);
 
               for (const comment of allCommentsForPR.data) {
                 if (comment.body.trim() === 'TESTED') {
+                  console.log(`PR Number: ${pr.number}`);  // Print PR number for each "TESTED" comment
                   console.log(`Comment ${comment.id}:`);
                   console.log(comment.body);
                   console.log('--------------------');
                 }
               }
             }
-            }
 
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_KEY }}
-
-     
-      
