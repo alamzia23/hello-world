@@ -1,40 +1,40 @@
- on:
+on:
   workflow_dispatch:
-   inputs:
-    PR_SHA:
-    description: SHA of the commit to cherry-pick
-    required: true
-   BASE_BRANCH:
-    description: Base branch to create PR against (optional, defaults to main)
-    required: false
-    default: main
+    inputs:
+      PR_SHA:
+        description: SHA of the commit to cherry-pick
+        required: true
+      BASE_BRANCH:
+        description: Base branch to create PR against (optional, defaults to main)
+        required: false
+        default: main
 
- jobs:
- cherry-pick-and-pr:
-  runs-on: ubuntu-latest
+jobs:
+  cherry-pick-and-pr:
+    runs-on: ubuntu-latest
 
-  env:
-   GH_TOKEN: ${{ github.token }}
+    env:
+      GH_TOKEN: ${{ github.token }}
 
-  steps:
-   - name: Checkout code
-     uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-   - name: Set up Git
-     run: |
-      git config --global user.email "alamziya.fzd@gmail.com"
-      git config --global user.name "alamzia23"
+      - name: Set up Git
+        run: |
+          git config --global user.email "alamziya.fzd@gmail.com"
+          git config --global user.name "alamzia23"
 
-   - name: Access all the repos
-     run: git fetch --all
+      - name: Access all the repos
+        run: git fetch --all
 
-   - name: Create int branch if needed
-     run: |
-      git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
-      git checkout int
+      - name: Create int branch if needed
+        run: |
+          git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
+          git checkout int
 
-   - name: Cherry-pick commit with ours strategy
-     run: git cherry-pick -X ours ${{ github.event.inputs.PR_SHA }}
+      - name: Cherry-pick commit
+        run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
 
-   - name: Push int branch
-     run: git push origin int
+      - name: Push int branch
+        run: git push origin int
