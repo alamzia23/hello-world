@@ -20,11 +20,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Git configuration
+      - name: Set up Git
         run: |
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
-          git config --global merge.tool vimdiff
 
       - name: Access all the repos
         run: git fetch --all
@@ -34,12 +33,8 @@ jobs:
           git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'main' }} || true
           git checkout int
 
-      - name: Cherry-pick commit with conflict resolution
-        run: |
-          git cherry-pick ${{ github.event.inputs.PR_SHA }}
+      - name: Cherry-pick commit
+        run: git cherry-pick ${{ github.event.inputs.PR_SHA }}
 
       - name: Push int branch
         run: git push origin int
-
-      # - name: Create pull request
-      #   run: gh pr create --base main --head int --title "Cherry-pick of commit ${{ github.event.inputs.PR_SHA }}"
