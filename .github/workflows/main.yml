@@ -33,7 +33,9 @@ jobs:
 
               for (const comment of allCommentsForPR.data) {
                 if (comment.body.trim() === 'TESTED') {
-                  console.log(`PR Number: ${pr.number}`);  // Print PR number for each "TESTED" comment
+                  const headSHA = pr.head.sha;  // Access the SHA of the PR
+                  console.log(`PR Number: ${pr.number}`);
+                  console.log(`SHA: ${headSHA}`);  // Print the SHA
                   console.log(`Comment ${comment.id}:`);
                   console.log(comment.body);
                   console.log('--------------------');
