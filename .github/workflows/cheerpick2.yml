@@ -37,7 +37,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const prNos = ${{ github.event.inputs.PR_NUMBERS }}.split(",").reduce((acc, no) => {
+            const prNos = "${{ github.event.inputs.PR_NUMBERS }}".split(",").reduce((acc, no) => {
               return isNaN(parseInt(no)) ? [...acc] : [...acc, parseInt(no)]
             }, [])
             console.log({prNos})
