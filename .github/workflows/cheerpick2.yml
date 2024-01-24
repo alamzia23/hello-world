@@ -37,7 +37,7 @@ jobs:
 
       - name: Get pr hashes
         id: get_pr_hashes
-      - uses: actions/github-script@v7
+        uses: actions/github-script@v7
         with:
           script: |
             const prNos = ${{ prNumbers }}.split(",")
