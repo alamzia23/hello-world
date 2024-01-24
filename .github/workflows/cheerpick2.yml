@@ -34,7 +34,7 @@ jobs:
           git checkout int
 
       - name: Cherry-pick commit
-        run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+        run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs && git cherry-pick --continue
 
       - name: Push int branch
         run: git push origin int --force
