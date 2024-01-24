@@ -3,6 +3,8 @@ on:
     inputs:
       PR_SHA:
         description: SHA of the commit to cherry-pick
+        required: false
+      Pr_numbers:
         required: true
       BASE_BRANCH:
         description: Base branch to create PR against (optional, defaults to main)
@@ -33,8 +35,30 @@ jobs:
           git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'dev' }} || true
           git checkout int
 
-      - name: Cherry-pick commit
-        run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+      - name: Get pr hashes
+        id: get_pr_hashes
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const prNos = ${{ prNumbers }}.split(",")
+            const allPullRequests = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+            });
+
+            const prShas = []
+            for (const pr of allPullRequests.data) {
+             	if (prNos.includes(pr.number)) {
+             	  prShas.push(pr.head.sha)
+              }
+            }
+            console.log(##[set-output name=prShas;]${prShas.join(" ")})
+
+      - name: Cherry pick on the prShas list
+        run: |
+          const prShas = ${{ steps.get_pr_hashes.outputs.prShas }}
+          const prShasList = prShas.split(" ")
 
       - name: Push int branch
         run: git push origin int
