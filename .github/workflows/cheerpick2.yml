@@ -37,4 +37,4 @@ jobs:
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
       - name: Push int branch
-        run: git push origin int
+        run: git push origin int --force
