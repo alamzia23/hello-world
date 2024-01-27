@@ -26,7 +26,7 @@ jobs:
           git config --global user.name "alamzia23"
 
       - name: Access all the repos
-        run: git fetch --all
+        run: git pull
 
       - name: Create int branch if needed
         run: |
@@ -37,6 +37,8 @@ jobs:
 
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+
+    
 
       - name: Push int branch
         run: git push origin int
