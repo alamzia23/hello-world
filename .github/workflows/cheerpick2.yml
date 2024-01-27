@@ -30,10 +30,10 @@ jobs:
 
       - name: Create int branch if needed
         run: |
-          git branch -f int ${{ github.event.inputs.BASE_BRANCH || 'dev' }} || true
+          git branch int
           git checkout int
-      - name: git fetch to access the commit present in the remote repo
-        run: git fetch
+      # - name: git fetch to access the commit present in the remote repo
+      #   run: git fetch
 
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
