@@ -36,7 +36,7 @@ jobs:
       # - name: Cherry-pick commit
       #   run: git cherry-pick  ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
       - name: Cherry-pick commit
-        run: git cherry-pick -m 1 ${{ github.event.inputs.PR_SHA }}
+        run: git cherry-pick -m 1 ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
      
 
