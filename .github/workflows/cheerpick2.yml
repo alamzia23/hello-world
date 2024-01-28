@@ -36,7 +36,7 @@ jobs:
       # - name: Cherry-pick commit
       #   run: git cherry-pick -m "This is a automatic merge" ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
       - name: git-cherry-pick
-        run: git cherry-pick -m "This is an automatic merge" -m mainline=1 ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+        run: git cherry-pick -m "This is an automatic merge" -m mainline=2 ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
 
         
