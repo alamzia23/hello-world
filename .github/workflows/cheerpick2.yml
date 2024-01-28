@@ -42,5 +42,8 @@ jobs:
 
 
 
-      - name: Push int branch
-        run: git push origin int
+      # - name: Push int branch
+      #   run: git push origin int
+      - name: Force push int branch (use with caution)
+        run: git push origin int --force
+
