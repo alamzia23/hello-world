@@ -17,8 +17,13 @@ jobs:
       GH_TOKEN: ${{ secrets.NEW_TOKEN }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
+      
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: 'v${{ env.NEW_TOKEN }}'
 
       - name: Set up Git
         run: |
