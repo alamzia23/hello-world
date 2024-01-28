@@ -35,15 +35,7 @@ jobs:
 
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
-
-      # - name: git pull origin int
-      #   run: git pull origin int --no-rebase --allow-unrelated-histories
-
-
-
-
-      # - name: Push int branch
-      #   run: git push origin int
-      - name: Force push int branch (use with caution)
+        
+      - name: Force push int branch 
         run: git push origin int --force
 
