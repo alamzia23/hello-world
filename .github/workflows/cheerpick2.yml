@@ -17,8 +17,13 @@ jobs:
       GH_TOKEN: ${{ secrets.NEW_TOKEN }}  # Ensure a valid token is stored in the secret
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # Remove the incorrect `ref` input
+      # - name: Checkout code
+      #   uses: actions/checkout@v3  # Remove the incorrect `ref` input
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}  # Reference the secret here
+
 
       - name: Set up Git
         run: |
