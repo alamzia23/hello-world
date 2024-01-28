@@ -26,7 +26,7 @@ jobs:
           git config --global user.name "alamzia23"
 
       - name: Fetch latest remote changes
-        run: git fetch origin
+        run: git pull
 
       - name: Create int branch if needed
         run: |
@@ -35,11 +35,6 @@ jobs:
 
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
-
-      - name: Merge remote changes if necessary
-        run: |
-          git fetch origin
-          git merge origin/${{ github.event.inputs.BASE_BRANCH }}
 
       - name: Push int branch
         run: git push origin int
