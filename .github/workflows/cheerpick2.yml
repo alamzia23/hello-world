@@ -37,7 +37,8 @@ jobs:
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
       - name: git pull origin int
-        run:  git pull origin int 
+        run: git pull origin int --no-rebase
+
 
       - name: Push int branch
         run: git push origin int
