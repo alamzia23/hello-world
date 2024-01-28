@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.WORKFLOW_TOKEN }}  # Reference the secret here
+          token: ${{ secrets.NEW_TOKEN }}  # Reference the secret here
 
 
       - name: Set up Git
