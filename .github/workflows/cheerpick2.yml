@@ -34,7 +34,7 @@ jobs:
           git checkout int
 
       - name: Cherry-pick commit
-        run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+        run: git cherry-pick -m "This is a automatic merge" ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
         
       - name: Force push int branch 
         run: git push origin int --force
