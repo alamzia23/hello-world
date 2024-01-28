@@ -36,8 +36,8 @@ jobs:
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
-      - name: git pull origin int
-        run: git pull origin int --no-rebase --allow-unrelated-histories
+      # - name: git pull origin int
+      #   run: git pull origin int --no-rebase --allow-unrelated-histories
 
 
 
