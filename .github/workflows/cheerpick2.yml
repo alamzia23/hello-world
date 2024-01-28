@@ -13,17 +13,12 @@ jobs:
   cherry-pick-and-pr:
     runs-on: ubuntu-latest
 
-    # env:
-    #   GH_TOKEN: ${{ secrets.NEW_TOKEN }}
+    env:
+      GH_TOKEN: ${{ secrets.NEW_TOKEN }}  # Ensure a valid token is stored in the secret
 
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v2
-      
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ secrets.NEW_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v3  # Remove the incorrect `ref` input
 
       - name: Set up Git
         run: |
@@ -35,17 +30,13 @@ jobs:
 
       - name: Create int branch if needed
         run: |
-          git branch int || true
+          if ! git branch -a | grep int; then
+            git branch int
+          fi
           git checkout int
 
-      # - name: Cherry-pick commit
-      #   run: git cherry-pick  ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
       - name: Cherry-pick commit
         run: git cherry-pick -m 1 ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
-     
-
-        
-      - name: Force push int branch 
-        run: git push origin int --force
-
+      - name: Push int branch with safety check
+        run: git push origin int --force-with-lease
