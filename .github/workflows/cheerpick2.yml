@@ -33,8 +33,12 @@ jobs:
           git branch int || true
           git checkout int
 
-      - name: Cherry-pick commit
-        run: git cherry-pick -m "This is a automatic merge" ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+      # - name: Cherry-pick commit
+      #   run: git cherry-pick -m "This is a automatic merge" ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+      - name: git-cherry-pick
+        run: git cherry-pick -m "This is an automatic merge" -m mainline=1 ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
+
+
         
       - name: Force push int branch 
         run: git push origin int --force
