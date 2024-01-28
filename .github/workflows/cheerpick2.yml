@@ -25,20 +25,21 @@ jobs:
           git config --global user.email "alamziya.fzd@gmail.com"
           git config --global user.name "alamzia23"
 
-      - name: Access all the repos
-        run: git pull
+      - name: Fetch latest remote changes
+        run: git fetch origin
 
       - name: Create int branch if needed
         run: |
-          git branch int
+          git branch int || true
           git checkout int
-      # - name: git fetch to access the commit present in the remote repo
-      #   run: git fetch
 
       - name: Cherry-pick commit
         run: git cherry-pick ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
 
-    
+      - name: Merge remote changes if necessary
+        run: |
+          git fetch origin
+          git merge origin/${{ github.event.inputs.BASE_BRANCH }}
 
       - name: Push int branch
         run: git push origin int
