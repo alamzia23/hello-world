@@ -13,8 +13,8 @@ jobs:
   cherry-pick-and-pr:
     runs-on: ubuntu-latest
 
-    env:
-      GH_TOKEN: ${{ secrets.NEW_TOKEN }}
+    # env:
+    #   GH_TOKEN: ${{ secrets.NEW_TOKEN }}
 
     steps:
       # - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: 'v${{ env.NEW_TOKEN }}'
+          ref: ${{ secrets.NEW_TOKEN }}
 
       - name: Set up Git
         run: |
