@@ -13,16 +13,14 @@ jobs:
   cherry-pick-and-pr:
     runs-on: ubuntu-latest
 
-    env:
-      GH_TOKEN: ${{ secrets.NEW_TOKEN }}  # Ensure a valid token is stored in the secret
-
+    # env:
+    #   GH_TOKEN: ${{ secrets.NEW_TOKEN }}  
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3  # Remove the incorrect `ref` input
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.NEW_TOKEN }}  # Reference the secret here
+          token: ${{ secrets.NEW_TOKEN }}  
 
 
       - name: Set up Git
