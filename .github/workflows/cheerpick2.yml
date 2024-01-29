@@ -32,11 +32,11 @@ jobs:
         run: git pull
 
       - name: Create int branch if needed
-        run: |
-          if ! git branch -a | grep int; then
-            git branch int
-          fi
-          git checkout int
+        run:    git checkout int
+          # if ! git branch -a | grep int; then
+          #   git branch int
+          # fi
+       
 
       - name: Cherry-pick commit
         run: git cherry-pick -m 1 ${{ github.event.inputs.PR_SHA }} --strategy-option theirs
